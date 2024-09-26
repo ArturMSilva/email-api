@@ -3,7 +3,6 @@ const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 require('dotenv').config(); // Para carregar variáveis de ambiente
 
-
 const app = express();
 
 // Middleware para entender requisições JSON
@@ -33,7 +32,7 @@ const transport = nodemailer.createTransport({
 });
 
 app.post("/send-email", (req, res) => {
-  let { nome, email, mensagem } = req.body
+  let { nome, email, mensagem } = req.body;
 
   transport
     .sendMail({
@@ -51,9 +50,5 @@ app.use((req, res) => {
   res.status(404).send("Rota não encontrada");
 });
 
-//iniciar o servidor
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Exporta o app para o Vercel como função serverless
+module.exports = app;
