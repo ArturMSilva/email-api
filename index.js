@@ -1,13 +1,15 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
-require('dotenv').config(); // Para carregar variáveis de ambiente
-
+const cors = require("cors");
+require("dotenv").config(); // Para carregar variáveis de ambiente
 
 const app = express();
 
 // Middleware para entender requisições JSON
 app.use(express.json());
+
+app.use(cors()); // Habilita CORS para todas as rotas
 
 // Middleware para limitar requisições
 const limiter = rateLimit({
@@ -33,7 +35,7 @@ const transport = nodemailer.createTransport({
 });
 
 app.post("/send-email", (req, res) => {
-  let { nome, email, mensagem } = req.body
+  let { nome, email, mensagem } = req.body;
 
   transport
     .sendMail({
@@ -52,7 +54,7 @@ app.use((req, res) => {
 });
 
 //iniciar o servidor
-const PORT = 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
